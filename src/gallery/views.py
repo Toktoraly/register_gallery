@@ -3,6 +3,7 @@ from .models import Image
 from .forms import GalleryForm
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 def gallery(request):
@@ -32,4 +33,11 @@ def auth(request):
             return redirect("/")
     return render(request,"gallery/login.html")
     
-
+def register(request):
+    form  = UserCreationForm()
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            redirect("/")
+    return render(request, "gallery/register.html",{"form":form})
